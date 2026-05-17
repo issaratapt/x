@@ -4,17 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ISSARAT MANAGER</title>
-
-//  <!-- ───────────────────────────────────────────────────────────
-//       [SECURITY] Content Security Policy
-//       - default-src 'none'    → block ทุกอย่างเป็น default
-//       - frame-src             → อนุญาตเฉพาะ iframe จาก Apps Script + Google user content (รูป/ไฟล์ที่ใช้ใน sandbox)
-//       - img-src               → อนุญาตเฉพาะ postimg.cc (favicon ที่ใช้)
-//       - style-src             → unsafe-inline จำเป็นสำหรับ <style> ในไฟล์นี้
-//       - frame-ancestors 'none'→ ห้ามเว็บอื่นเอาไฟล์นี้ไป embed ใน iframe (anti-clickjacking)
-//       - base-uri 'none'       → ห้าม <base> tag injection
-//       - form-action 'none'    → ไม่มี form ในหน้านี้ — บล็อกหมด
-//       ─────────────────────────────────────────────────────────── -->
   <meta http-equiv="Content-Security-Policy"
         content="default-src 'none';
                  frame-src https://script.google.com https://*.googleusercontent.com;
@@ -24,23 +13,18 @@
                  frame-ancestors 'none';
                  base-uri 'none';
                  form-action 'none';">
-
-//  <!-- [SECURITY] referrer policy — ส่งแค่ origin ตอน cross-origin ไม่ส่ง full path -->
   <meta name="referrer" content="strict-origin-when-cross-origin">
-
   <link rel="apple-touch-icon" href="https://i.postimg.cc/X7DkVhtL/Baan-Issarat-Logo-250x250.png">
   <link rel="icon" type="image/png" sizes="192x192" href="https://i.postimg.cc/BvDcWyGr/Baan-Issarat-LOGO-6.png">
   <link rel="icon" type="image/png" sizes="32x32" href="https://i.postimg.cc/BvDcWyGr/Baan-Issarat-LOGO-6.png">
   <link rel="icon" type="image/png" sizes="16x16" href="https://i.postimg.cc/BvDcWyGr/Baan-Issarat-LOGO-6.png">
-
   <style>
-//    /* ตั้งค่าให้หน้าเว็บและ iframe แสดงผลเต็มจอแบบไม่มีขอบ */
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
-      overflow: hidden;          /* ป้องกัน scrollbar ที่ไม่จำเป็น */
-      background: #f8fafc;       /* slate-50 — กลมกลืนกับสีของ web app */
+      overflow: hidden;        
+      background: #f8fafc; 
     }
     iframe {
       width: 100%;
@@ -52,21 +36,6 @@
 </head>
 <body>
 
-//  <!-- [SECURITY] sandbox attributes (เฉพาะที่จำเป็น เท่านั้น)
-//       - allow-scripts       : Apps Script ต้องใช้ JS
-//       - allow-same-origin   : ต้อง ใช้ Google APIs (google.script.run) ใน iframe context
-//       - allow-forms         : ในหน้า login มี form (username/password)
-//       - allow-popups        : เปิดลิงก์ใหม่ เช่น สลิป, รายงาน
-//       - allow-popups-to-escape-sandbox : popup ที่เปิดออกไม่ติด sandbox restrictions
-//       - allow-downloads     : ดาวน์โหลด PDF / Excel
-//       - allow-modals        : SweetAlert dialogs
-
-//       ไม่ได้ใส่:
-//       - allow-top-navigation : ป้องกัน iframe redirect ทั้งหน้าโดยไม่ผ่านผู้ใช้
-//       - allow-presentation, allow-orientation-lock ฯลฯ : ไม่จำเป็น
-
-// allow="clipboard-write" : iframe ก๊อปข้อความได้ (เช่น เลขบัญชี, รหัสบิล)  -->
-  
   <iframe
     src="https://script.google.com/macros/s/AKfycbzyQh3kuwTUR_k-ua_7Ss3ZhKr4NM_8XbzgXK2TQaKcDKJAezuAJvD7N6oMAEWR_a3cGw/exec"
     sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-downloads allow-modals"
@@ -74,15 +43,11 @@
     referrerpolicy="strict-origin-when-cross-origin"
     title="ISSARAT Apartment Manager"></iframe>
 
-//  <!-- [SECURITY] Frame-busting fallback — ในกรณี CSP frame-ancestors ไม่ถูก enforce
-//       (Browser เก่าบางตัวอ่าน CSP จาก meta tag ไม่ครบ) บังคับเด้งออกถ้าเว็บนี้ถูกฝังใน iframe -->
-  
   <script>
     if (window.top !== window.self) {
       try {
         window.top.location.href = window.self.location.href;
       } catch (e) {
-        // cross-origin block → แสดงข้อความแทน
         document.body.innerHTML = '<p style="padding:20px;font-family:sans-serif">หน้านี้ไม่อนุญาตให้ฝังในเว็บอื่น</p>';
       }
     }
